@@ -1,4 +1,4 @@
-AFRICA
+const words = `AFRICA
 AGENT
 AIR
 ALIEN
@@ -397,4 +397,5 @@ WHIP
 WIND
 WITCH
 WORM
-YARD
+YARD`.split("\n");
+export default words;
