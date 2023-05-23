@@ -1,29 +1,29 @@
-"use client";
 import React from "react";
-import { Agent, Board, State, StateData } from "../data/types";
-import { buildN } from "../data/utils";
+import { State } from "../data/types";
+import { buildN, flip } from "../data/utils";
 import { AgentCell } from "./AgentCell";
-const fetcher = (init?: RequestInit) => (url: string) =>
-    fetch(url, init).then(res => res.json());
+import { SpymasterView } from "./SpymasterView";
+import { TopInfo } from "./TopInfo";
+function onPlayerNext(state: State) {
+    return (e: React.FormEvent) => {
+        e.preventDefault();
+        state.set(s => ({
+            ...s,
+            current: {
+                ...s.current,
+                turn: flip(s.current.turn, "Red", "Blue"),
+                showBoard: false,
+            },
+        }));
+    };
+}
 export const CodenamesBoard: React.FC<{
-    first: Agent;
-    board: Board;
-}> = function ({ first, board }) {
-    const _state = React.useState<StateData>({
-        running: true,
-        mode: "spymaster",
-        turn: first,
-        first,
-        board,
-    });
-    const state: State = { get: () => _state[0], set: _state[1] };
-    let run = state.get().running;
-    React.useEffect(() => {
-        if (!run) alert(`💣 Game Over 💣`);
-    }, [run]);
+    state: State;
+}> = function ({ state }) {
     return (
-        <div id="codenamesBoardDiv">
-            <table id="codenamesBoard">
+        <div>
+            <TopInfo state={state} />
+            <table key="codenamesBoard">
                 <tbody>
                     {buildN(5, row => (
                         <tr key={`row${row}`}>
@@ -33,13 +33,28 @@ export const CodenamesBoard: React.FC<{
                                     state={state}
                                     row={row}
                                     column={col}
-                                    word={board[row][col].word}
+                                    word={state.get().board[row][col].word}
                                 />
                             ))}
                         </tr>
                     ))}
                 </tbody>
             </table>
+            {(() => {
+                if (state.get().current.mode == "Spymaster")
+                    return <SpymasterView state={state} />;
+                else
+                    return (
+                        <div className="center">
+                            <button
+                                className="nextButton"
+                                onClick={onPlayerNext(state)}
+                            >
+                                Next
+                            </button>{" "}
+                        </div>
+                    );
+            })()}
         </div>
     );
 };

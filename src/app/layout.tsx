@@ -19,10 +19,23 @@ export default function RootLayout({
     return (
         <html lang="en">
             <head>
-                <meta title="Codenames" />
-                <link rel="icon" type="image/svg+xml" href="/data/react.svg" />
+                {/*<meta title="Codenames" />
+                <link rel="icon" type="image/svg+xml" href="/data/react.svg" />*/}
             </head>
-            <body className={inter.className}>{children}</body>
+            <body className={inter.className}>
+                <h1
+                    style={{
+                        textAlign: "center",
+                        top: 10,
+                        position: "fixed",
+                        fontSize: "24px",
+                        fontWeight: "bold",
+                    }}
+                >
+                    Codenames!
+                </h1>
+                {children}
+            </body>
         </html>
     );
 }

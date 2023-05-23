@@ -1,21 +1,35 @@
-"use client";
 import React from "react";
 import { State } from "../data/types";
-import { Colors } from "../data/utils";
-function onClick(state: State, row: number, column: number) {
-    function inner(e: React.FormEvent) {
+function onCellClick(state: State, row: number, column: number) {
+    return (e: React.FormEvent) => {
         e.preventDefault();
         let st = state.get();
         st.board[row][column].revealed = true;
-        if (st.board[row][column].color == "black") {
-            st.running = false;
+        if (st.board[row][column].color == st.current.turn) {
+            st.current.clicksLeft--;
+            if (st.current.clicksLeft <= 0) {
+                st.current.turnEnded = true;
+                st.current.turnEndedReason = "Out of clicks";
+            }
+        } else if (st.board[row][column].color == "Black") {
+            st.ended = true;
+            st.current.turnEnded = true;
+            st.current.turnEndedReason = "boom";
+        } else {
+            // other team or yellow
+            st.current.turnEnded = true;
+            st.current.turnEndedReason = "Not your team";
         }
+        // add win check logic
         state.set(s => ({ ...st }));
-        console.log(`Clicked ${row}${column}`);
-    }
-    return inner;
-}
 
+        fetch(`/api/boards/${st.boardId}`, {
+            method: "POST",
+            body: JSON.stringify(st.board),
+        }).then(r => console.log(r));
+        console.log(`Clicked ${row}${column}`);
+    };
+}
 export const AgentCell: React.FC<{
     state: State;
     row: number;
@@ -23,22 +37,29 @@ export const AgentCell: React.FC<{
     word: string;
 }> = function ({ state, row, column, word }) {
     let cell = state.get().board![row][column];
-    console.log(row, column, JSON.stringify(cell));
+    const show = () =>
+        cell.revealed ||
+        state.get().current.mode == "Spymaster" ||
+        state.get().ended;
     return (
         <td
             key={`cell${row}${column}`}
-            style={{
-                backgroundColor: cell.revealed ? Colors[cell.color] : "",
-                color:
-                    cell.revealed && cell.color == "black" ? "white" : "black",
-            }}
+            className={show() ? cell.color : ""}
+            /*style={{
+                backgroundColor: show() ? Colors[cell.color] : "",
+                color: show() && cell.color == "Black" ? "white" : "black",
+            }}*/
         >
             <button
-                onClick={onClick(state, row, column)}
+                onClick={onCellClick(state, row, column)}
                 type="submit"
                 key={`button${row}${column}`}
                 className="wordButton"
-                disabled={cell.revealed || !state.get().running}
+                disabled={
+                    !state.get().started ||
+                    state.get().current.turnEnded ||
+                    show()
+                }
             >
                 {word}
             </button>

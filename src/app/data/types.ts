@@ -1,7 +1,7 @@
 import React from "react";
-export type Mode = "spymaster" | "player";
-export type Agent = "red" | "blue";
-export type Color = Agent | "black" | "yellow";
+export type Mode = "Spymaster" | "Player";
+export type Team = "Red" | "Blue";
+export type Color = Team | "Black" | "Yellow";
 export interface Tile {
     color: Color;
     word: string;
@@ -9,14 +9,29 @@ export interface Tile {
 }
 export type Row = [Tile, Tile, Tile, Tile, Tile];
 export type Board = [Row, Row, Row, Row, Row];
-export interface StateData {
-    running: boolean;
+export interface Current {
+    turn: Team;
     mode: Mode;
-    first: Agent;
-    turn: Agent;
+    clue: string;
+    count: number;
+    clicksLeft: number;
+    showBoard: boolean;
+    turnEnded: boolean;
+    turnEndedReason: string;
+}
+export interface StateData {
+    started: boolean;
+    ended: boolean;
+    first: Team;
     board: Board;
+    boardId: number;
+    current: Current;
 }
 export interface State {
     get: () => StateData;
     set: React.Dispatch<React.SetStateAction<StateData>>;
+}
+export interface ClueForm extends HTMLFormElement {
+    clue: HTMLInputElement;
+    count: HTMLInputElement;
 }
