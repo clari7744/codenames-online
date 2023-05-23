@@ -20,7 +20,6 @@ function onCellClick(state: State, row: number, column: number) {
             st.current.turnEnded = true;
             st.current.turnEndedReason = "Not your team";
         }
-        // add win check logic
         state.set(s => ({ ...st }));
 
         fetch(`/api/boards/${st.boardId}`, {
