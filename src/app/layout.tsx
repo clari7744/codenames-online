@@ -8,7 +8,8 @@ export const metadata: Metadata = {
     title: "Codenames",
     description: "where does this even show",
     authors: { name: "Clari", url: "https://github.com/Clari-7744" },
-    icons: [{ url: "/data/react.svg", type: "image/svg+xml" }],
+    icons: [{ url: "/react.svg", type: "image/svg+xml" }],
+    //icons: [{ url: "/data/react.svg", type: "image/svg+xml" }],
 };
 
 export default function RootLayout({

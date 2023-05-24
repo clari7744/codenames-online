@@ -35,30 +35,34 @@ export const AgentCell: React.FC<{
     column: number;
     word: string;
 }> = function ({ state, row, column, word }) {
-    let cell = state.get().board![row][column];
-    const show = () =>
-        cell.revealed ||
+    const cell = state.get().board[row][column];
+    /* faded cases:
+     * state.get().current.mode == 'Spymaster' && cell.revealed
+     * state.get().ended
+     * previously clicked
+     * */
+    /* solid cases
+     * JUST clicked
+     * state.get().current.mode == 'Spymaster' && !cell.revealed
+     */
+    const visible =
         state.get().current.mode == "Spymaster" ||
+        cell.revealed ||
         state.get().ended;
+    const faded =
+        (state.get().current.mode == "Spymaster" || state.get().ended) &&
+        cell.revealed;
     return (
         <td
             key={`cell${row}${column}`}
-            className={show() ? cell.color : ""}
-            /*style={{
-                backgroundColor: show() ? Colors[cell.color] : "",
-                color: show() && cell.color == "Black" ? "white" : "black",
-            }}*/
+            className={`${visible ? cell.color : ""} ${faded ? "faded" : ""}`}
         >
             <button
                 onClick={onCellClick(state, row, column)}
                 type="submit"
                 key={`button${row}${column}`}
                 className="wordButton"
-                disabled={
-                    !state.get().started ||
-                    state.get().current.turnEnded ||
-                    show()
-                }
+                disabled={visible || state.get().current.turnEnded}
             >
                 {word}
             </button>
