@@ -1,6 +1,7 @@
 import React from "react";
 export type Mode = "Spymaster" | "Player";
 export type Team = "Red" | "Blue";
+export const Team = ["Red", "Blue"] as const;
 export type Color = Team | "Black" | "Yellow";
 export interface Tile {
     color: Color;

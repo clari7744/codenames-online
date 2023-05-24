@@ -1,5 +1,5 @@
 import React from "react";
-import { State } from "../data/types";
+import { State, Team } from "../data/types";
 import { buildN, flip } from "../data/utils";
 import { AgentCell } from "./AgentCell";
 import { SpymasterView } from "./SpymasterView";
@@ -11,7 +11,7 @@ function onPlayerNext(state: State) {
             ...s,
             current: {
                 ...s.current,
-                turn: flip(s.current.turn, "Red", "Blue"),
+                turn: flip(s.current.turn, ...Team),
                 showBoard: false,
             },
         }));
