@@ -4,6 +4,7 @@ import { Board, State, StateData, Team } from "../data/types";
 import { CodenamesBoard } from "./CodenamesBoard";
 import { Halfway } from "./Halfway";
 import { StartGame } from "./StartGame";
+import { flip } from "../data/utils";
 
 export const WhatShow: React.FC<{
     first: Team;
@@ -13,6 +14,16 @@ export const WhatShow: React.FC<{
     const _state = React.useState<StateData>({
         started: false,
         ended: false,
+        first,
+        second: flip(first, "Red", "Blue"),
+        board,
+        boardId: boardId,
+        counts: {
+            Red: 0,
+            Blue: 0,
+            Yellow: 0,
+            Black: 0,
+        },
         current: {
             mode: "Spymaster",
             turn: first,
@@ -23,9 +34,6 @@ export const WhatShow: React.FC<{
             turnEnded: false,
             turnEndedReason: "",
         },
-        first,
-        board,
-        boardId: boardId,
     });
     const state: State = { get: () => _state[0], set: _state[1] };
     if (!state.get().started) {

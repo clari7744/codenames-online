@@ -23,8 +23,15 @@ export interface StateData {
     started: boolean;
     ended: boolean;
     first: Team;
+    second: Team;
     board: Board;
     boardId: number;
+    counts: {
+        Red: number;
+        Blue: number;
+        Yellow: number;
+        Black: number;
+    };
     current: Current;
 }
 export interface State {

@@ -1,10 +1,12 @@
 import React from "react";
 import { State } from "../data/types";
+import { flip } from "../data/utils";
 function onCellClick(state: State, row: number, column: number) {
     return (e: React.FormEvent) => {
         e.preventDefault();
         let st = state.get();
         st.board[row][column].revealed = true;
+        st.counts[st.board[row][column].color]++;
         if (st.board[row][column].color == st.current.turn) {
             st.current.clicksLeft--;
             if (st.current.clicksLeft <= 0) {
@@ -19,6 +21,17 @@ function onCellClick(state: State, row: number, column: number) {
             // other team or yellow
             st.current.turnEnded = true;
             st.current.turnEndedReason = "Not your team";
+        }
+        let win =
+            st.counts[st.first] >= 9
+                ? st.first
+                : st.counts[st.second] >= 8
+                ? st.second
+                : null;
+        if (win) {
+            st.ended = true;
+            st.current.turnEnded = true;
+            st.current.turnEndedReason = `${win} team wins!`;
         }
         state.set(s => ({ ...st }));
 
