@@ -16,6 +16,7 @@ export const StartGame: React.FC<{ state: State }> = function ({ state }) {
                         state.set(s => ({ ...s, started: true }));
                     }}
                     className="nextButton"
+                    disabled={state.get().started}
                 >
                     Start Game
                 </button>

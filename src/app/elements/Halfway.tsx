@@ -19,7 +19,11 @@ export const Halfway: React.FC<{ state: State; next: Mode }> =
         return (
             <div className="center">
                 <PassDevice team={state.get().current.turn} mode={next} />
-                <button className="nextButton" onClick={goNext}>
+                <button
+                    className="nextButton"
+                    onClick={goNext}
+                    disabled={state.get().ended}
+                >
                     Next
                 </button>
             </div>

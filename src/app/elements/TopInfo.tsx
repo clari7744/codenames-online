@@ -17,11 +17,16 @@ export const TopInfo: React.FC<{ state: State }> = function ({ state }) {
                 data.mode == "Player" && !state.get().ended,
                 `Clue: "${data.clue}"
                 # Matching: ${data.count}
-                Clicks Left: ${data.clicksLeft} click${s(data.clicksLeft)}`
+                Clicks Left: ${data.clicksLeft} click${s(
+                    typeof data.clicksLeft != "number" || data.clicksLeft != 1
+                )}`
             )}
-            {is(state.get().ended, "Game over!")}
             {is(
-                data.turnEnded,
+                state.get().ended,
+                `Game ended! Reason: ${data.turnEndedReason}`
+            )}
+            {is(
+                data.turnEnded && !state.get().ended,
                 `Your turn is over! Reason: ${data.turnEndedReason}`
             )}
         </div>

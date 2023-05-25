@@ -1,6 +1,5 @@
 import React from "react";
 import { State } from "../data/types";
-import { flip } from "../data/utils";
 function onCellClick(state: State, row: number, column: number) {
     return (e: React.FormEvent) => {
         e.preventDefault();
@@ -8,15 +7,17 @@ function onCellClick(state: State, row: number, column: number) {
         st.board[row][column].revealed = true;
         st.counts[st.board[row][column].color]++;
         if (st.board[row][column].color == st.current.turn) {
-            st.current.clicksLeft--;
-            if (st.current.clicksLeft <= 0) {
-                st.current.turnEnded = true;
-                st.current.turnEndedReason = "Out of clicks";
+            if (typeof st.current.clicksLeft == "number") {
+                st.current.clicksLeft--;
+                if (st.current.clicksLeft <= 0) {
+                    st.current.turnEnded = true;
+                    st.current.turnEndedReason = "Out of clicks";
+                }
             }
         } else if (st.board[row][column].color == "Black") {
             st.ended = true;
             st.current.turnEnded = true;
-            st.current.turnEndedReason = "boom";
+            st.current.turnEndedReason = `${st.current.turn} team found the assassin!`;
         } else {
             // other team or yellow
             st.current.turnEnded = true;

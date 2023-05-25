@@ -18,7 +18,7 @@ function sendClue(state: State) {
                 ...s.current,
                 clue,
                 count,
-                clicksLeft: count + 1,
+                clicksLeft: count > 0 ? count + 1 : "∞",
                 showBoard: false,
             },
         }));

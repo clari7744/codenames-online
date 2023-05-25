@@ -15,7 +15,7 @@ export interface Current {
     mode: Mode;
     clue: string;
     count: number;
-    clicksLeft: number;
+    clicksLeft: number | "∞";
     showBoard: boolean;
     turnEnded: boolean;
     turnEndedReason: string;

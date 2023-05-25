@@ -49,6 +49,7 @@ export const CodenamesBoard: React.FC<{
                             <button
                                 className="nextButton"
                                 onClick={onPlayerNext(state)}
+                                disabled={state.get().ended}
                             >
                                 Next
                             </button>{" "}
