@@ -4,24 +4,25 @@ function onCellClick(state: State, row: number, column: number) {
     return (e: React.FormEvent) => {
         e.preventDefault();
         let st = state.get();
-        st.board[row][column].revealed = true;
-        st.counts[st.board[row][column].color]++;
-        if (st.board[row][column].color == st.current.turn) {
-            if (typeof st.current.clicksLeft == "number") {
-                st.current.clicksLeft--;
-                if (st.current.clicksLeft <= 0) {
-                    st.current.turnEnded = true;
-                    st.current.turnEndedReason = "Out of clicks";
-                }
+        let cell = st.board[row][column];
+        cell.revealed = true;
+        st.counts[cell.color]++;
+        if (cell.color != st.current.turn) {
+            st.current.turnEnded = true;
+            if (cell.color == "Black") {
+                st.ended = true;
+                st.current.turnEndedReason = `${st.current.turn} team contacted the assassin!`;
+            } else if (cell.color == "Yellow")
+                st.current.turnEndedReason = "You contacted a bystander!";
+            else
+                st.current.turnEndedReason =
+                    "You contacted an agent on the other team!";
+        } else if (typeof st.current.clicksLeft == "number") {
+            st.current.clicksLeft--;
+            if (st.current.clicksLeft <= 0) {
+                st.current.turnEnded = true;
+                st.current.turnEndedReason = "You're out of tries!";
             }
-        } else if (st.board[row][column].color == "Black") {
-            st.ended = true;
-            st.current.turnEnded = true;
-            st.current.turnEndedReason = `${st.current.turn} team found the assassin!`;
-        } else {
-            // other team or yellow
-            st.current.turnEnded = true;
-            st.current.turnEndedReason = "Not your team";
         }
         let win =
             st.counts[st.first] >= 9

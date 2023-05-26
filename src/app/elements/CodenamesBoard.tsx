@@ -7,6 +7,7 @@ import { TopInfo } from "./TopInfo";
 function onPlayerNext(state: State) {
     return (e: React.FormEvent) => {
         e.preventDefault();
+        if (state.get().ended) document.location.reload();
         state.set(s => ({
             ...s,
             current: {
@@ -49,7 +50,6 @@ export const CodenamesBoard: React.FC<{
                             <button
                                 className="nextButton"
                                 onClick={onPlayerNext(state)}
-                                disabled={state.get().ended}
                             >
                                 Next
                             </button>{" "}

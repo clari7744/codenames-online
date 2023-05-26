@@ -14,7 +14,7 @@ export const TopInfo: React.FC<{ state: State }> = function ({ state }) {
                 {data.turn} {data.mode}
             </h2>
             {is(
-                data.mode == "Player" && !state.get().ended,
+                data.mode == "Player" && !state.get().ended && !data.turnEnded,
                 `Clue: "${data.clue}"
                 # Matching: ${data.count}
                 Clicks Left: ${data.clicksLeft} click${s(
@@ -23,11 +23,12 @@ export const TopInfo: React.FC<{ state: State }> = function ({ state }) {
             )}
             {is(
                 state.get().ended,
-                `Game ended! Reason: ${data.turnEndedReason}`
+                `Game ended!\nBecause: ${data.turnEndedReason}`
             )}
             {is(
                 data.turnEnded && !state.get().ended,
-                `Your turn is over! Reason: ${data.turnEndedReason}`
+                `Your turn is over!
+                Because: ${data.turnEndedReason}`
             )}
         </div>
     );

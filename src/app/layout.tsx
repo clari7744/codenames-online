@@ -36,6 +36,18 @@ export default function RootLayout({
                     Codenames!
                 </h1>
                 {children}
+                <footer
+                    style={{
+                        textAlign: "center",
+                        position: "absolute",
+                        bottom: 10,
+                        fontSize: "18px",
+                    }}
+                >
+                    <a href="https://czechgames.com/files/rules/codenames-rules-en.pdf">
+                        <button>Rules</button>
+                    </a>
+                </footer>
             </body>
         </html>
     );
