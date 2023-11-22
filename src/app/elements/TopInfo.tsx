@@ -23,7 +23,8 @@ export const TopInfo: React.FC<{ state: State }> = function ({ state }) {
             )}
             {is(
                 state.get().ended,
-                `Game ended!\nBecause: ${data.turnEndedReason}`
+                `Game ended!
+                Because: ${data.turnEndedReason}`
             )}
             {is(
                 data.turnEnded && !state.get().ended,
