@@ -11,7 +11,7 @@ const storage: {
 };
 export async function GET(
     request: Request,
-    context: { params: { boardId: number | "new" } }
+    context //  : { params: { boardId: number | "new" } }
 ) {
     let url = new URL(request.url);
     if (context.params.boardId == "new") {
